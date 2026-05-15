@@ -61,6 +61,21 @@ const midnightTheme: Theme = {
   },
 };
 
+const minimalTheme: Theme = {
+  name: 'minimal',
+  label: 'Minimal',
+  vars: {
+    '--bg-radial1': 'rgba(255, 255, 255, 0.02)',
+    '--bg-radial2': 'rgba(240, 240, 242, 0.6)',
+    '--bg-linear1': '#ffffff',
+    '--bg-linear2': '#f7f7f9',
+    '--bg-linear3': '#f0f0f2',
+    '--bg-linear4': '#e8e8ea',
+    '--text-color': '#0b1220',
+    '--card-bg': 'rgba(255,255,255,0.9)'
+  },
+};
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [themeName, setThemeName] = useState<string>(() => {
     try {
@@ -71,7 +86,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   });
 
   const themes = useMemo(
-    () => ({ apple: appleTheme, clearSky: clearSkyTheme, midnight: midnightTheme }),
+    () => ({ apple: appleTheme, clearSky: clearSkyTheme, midnight: midnightTheme, minimal: minimalTheme }),
     [],
   );
 

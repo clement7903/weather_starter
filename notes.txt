@@ -59,3 +59,10 @@ Sample instructions to put in .md file:
 
 How to create the AGENTS.md file?
 - Using /init command for github copilot or direct prompting to the agent.
+
+What are some ways to resolve token limits?
+1. Compaction: summarizing info, deleting outdated/unnecessary info. Normally done by the agent automatically when a particular token limit is hit.
+2. Structured Notes: Structured notes are plain text files, usually written in Markdown, that an agent can read in one session and reuse in a later one. AGENTS.md is one common example, but plans, handoff notes, and task summaries can all serve the same role. 
+    
+    It includes "Skills": reusable instructions that teach the agent how to perform a specific workflow or task. In practice, they are usually written as small Markdown files with a name, a short description, and step-by-step guidance the agent can follow. They will be covered in more detail in a later module.
+
