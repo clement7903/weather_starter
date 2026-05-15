@@ -181,10 +181,45 @@ export class SingaporeWeatherClient {
   ) {}
 
   async getCurrentWeather(latitude: number, longitude: number): Promise<WeatherSnapshot> {
-    const forecastPayload = await this.fetchLatestForecastPayload().catch(() => null);
-    return forecastPayload
+    const [
+      forecastPayload,
+      airQuality,
+      airTemperature,
+      relativeHumidity,
+      rainfall,
+      windSpeed,
+      windDirection,
+      uvIndex,
+      twentyFourHourForecast,
+      fourDayForecast,
+    ] = await Promise.all([
+      this.fetchLatestForecastPayload().catch(() => null),
+      this.fetchAirQuality(latitude, longitude).catch(() => null),
+      this.fetchNearestReading('air-temperature', latitude, longitude).catch(() => null),
+      this.fetchNearestReading('relative-humidity', latitude, longitude).catch(() => null),
+      this.fetchNearestReading('rainfall', latitude, longitude).catch(() => null),
+      this.fetchNearestReading('wind-speed', latitude, longitude).catch(() => null),
+      this.fetchNearestReading('wind-direction', latitude, longitude).catch(() => null),
+      this.fetchUvIndex().catch(() => null),
+      this.fetchTwentyFourHourForecast(latitude, longitude).catch(() => null),
+      this.fetchFourDayForecast().catch(() => null),
+    ]);
+
+    const snapshot = forecastPayload
       ? this.snapshotFromPayload(forecastPayload, latitude, longitude)
       : this.emptyForecastSnapshot();
+
+    return this.withWeatherMetrics(snapshot, {
+      airQuality,
+      airTemperature,
+      relativeHumidity,
+      rainfall,
+      windSpeed,
+      windDirection,
+      uvIndex,
+      twentyFourHourForecast,
+      fourDayForecast,
+    });
   }
 
   async fetchLatestForecastPayload(): Promise<ForecastPayload> {
@@ -469,6 +504,65 @@ export class SingaporeWeatherClient {
       air_quality_region: null,
       forecast_periods: [],
       daily_forecast: [],
+    };
+  }
+
+  private withWeatherMetrics(
+    snapshot: WeatherSnapshot,
+    metrics: {
+      airQuality: {
+        psi: number | null;
+        pm25: number | null;
+        region: string | null;
+        timestamp: string | null;
+      } | null;
+      airTemperature: { value: number | null; timestamp: string | null } | null;
+      relativeHumidity: { value: number | null; timestamp: string | null } | null;
+      rainfall: { value: number | null; timestamp: string | null } | null;
+      windSpeed: { value: number | null; timestamp: string | null } | null;
+      windDirection: { value: number | null; timestamp: string | null } | null;
+      uvIndex: { value: number | null; timestamp: string | null } | null;
+      twentyFourHourForecast:
+        | {
+            low: number | null;
+            high: number | null;
+            periods: ForecastPeriod[];
+            timestamp: string | null;
+          }
+        | null;
+      fourDayForecast: { days: DailyForecast[]; timestamp: string | null } | null;
+    },
+  ): WeatherSnapshot {
+    const timestamps = [snapshot.observed_at];
+
+    return {
+      ...snapshot,
+      temperature_c: metrics.airTemperature?.value ?? snapshot.temperature_c,
+      humidity_percent: metrics.relativeHumidity?.value ?? snapshot.humidity_percent,
+      rainfall_mm: metrics.rainfall?.value ?? snapshot.rainfall_mm,
+      wind_speed_knots: metrics.windSpeed?.value ?? snapshot.wind_speed_knots,
+      wind_direction_degrees: metrics.windDirection?.value ?? snapshot.wind_direction_degrees,
+      uv_index: metrics.uvIndex?.value ?? snapshot.uv_index,
+      psi_twenty_four_hourly: metrics.airQuality?.psi ?? snapshot.psi_twenty_four_hourly,
+      pm25_one_hourly: metrics.airQuality?.pm25 ?? snapshot.pm25_one_hourly,
+      air_quality_region: metrics.airQuality?.region ?? snapshot.air_quality_region,
+      forecast_low_c: metrics.twentyFourHourForecast?.low ?? snapshot.forecast_low_c,
+      forecast_high_c: metrics.twentyFourHourForecast?.high ?? snapshot.forecast_high_c,
+      forecast_periods: metrics.twentyFourHourForecast?.periods ?? snapshot.forecast_periods,
+      daily_forecast: metrics.fourDayForecast?.days ?? snapshot.daily_forecast,
+      observed_at:
+        latestTimestamp([
+          ...timestamps,
+          metrics.airQuality?.timestamp ?? null,
+          metrics.airTemperature?.timestamp ?? null,
+          metrics.relativeHumidity?.timestamp ?? null,
+          metrics.rainfall?.timestamp ?? null,
+          metrics.windSpeed?.timestamp ?? null,
+          metrics.windDirection?.timestamp ?? null,
+          metrics.uvIndex?.timestamp ?? null,
+          metrics.twentyFourHourForecast?.timestamp ?? null,
+          metrics.fourDayForecast?.timestamp ?? null,
+        ]) ?? snapshot.observed_at,
     };
   }
 }

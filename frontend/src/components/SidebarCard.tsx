@@ -1,5 +1,5 @@
 import { useStore } from '../state/store';
-import { CloudIcon, HomeIcon } from './icons';
+import { CloseIcon, CloudIcon, HomeIcon } from './icons';
 import { formatTemperature, formatTime } from './format';
 import type { KeyboardEvent } from 'react';
 import type { Location } from '../types';
@@ -10,7 +10,7 @@ interface SidebarCardProps {
 }
 
 export function SidebarCard({ location, isHome }: SidebarCardProps) {
-  const { selectedId, select } = useStore();
+  const { selectedId, select, deleteLocation } = useStore();
   const isSelected = selectedId === location.id;
   const observed = formatTime(location.weather.observed_at);
   const area =
@@ -21,6 +21,9 @@ export function SidebarCard({ location, isHome }: SidebarCardProps) {
   const low = formatTemperature(location.weather.forecast_low_c);
 
   const onSelect = () => select(location.id);
+  const onDelete = async () => {
+    await deleteLocation(location.id);
+  };
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget) return;
     if (event.key === 'Enter' || event.key === ' ') {
@@ -35,12 +38,23 @@ export function SidebarCard({ location, isHome }: SidebarCardProps) {
       onClick={onSelect}
       onKeyDown={onKeyDown}
       aria-pressed={isSelected}
-      className={`relative w-full cursor-pointer overflow-hidden rounded-2xl border text-left backdrop-blur-xl transition ${
+      className={`group relative w-full cursor-pointer overflow-hidden rounded-2xl border text-left backdrop-blur-xl transition ${
         isSelected
           ? 'border-white/30 bg-white/20 shadow-lg shadow-black/20'
           : 'border-white/10 bg-white/[0.07] hover:bg-white/[0.12]'
       }`}
     >
+      <button
+        type="button"
+        aria-label={`Delete ${location.weather.area || 'location'}`}
+        onClick={(event) => {
+          event.stopPropagation();
+          void onDelete();
+        }}
+        className="absolute right-2 top-2 z-10 grid h-7 w-7 place-items-center rounded-full border border-white/12 bg-black/35 text-white/70 opacity-90 transition hover:border-white/25 hover:bg-rose-500/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+      >
+        <CloseIcon className="h-3.5 w-3.5" />
+      </button>
       <div className="flex items-start justify-between gap-3 px-4 pt-3">
         <div className="min-w-0">
           <div className="truncate text-lg font-semibold leading-tight text-white">{area}</div>

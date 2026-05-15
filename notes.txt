@@ -1,0 +1,61 @@
+-- Prompt Engineering -- 
+Learn to use role, goal, context: 
+1. Role is persistent different requests 
+2. Role helps to anchor the model's behaviour (replies, how it acts, what it prioritizes etc )
+3. Goal: Make sure if passes unit_test_1, unit_test_2 etc 
+4. Context of which files to change, which files to take reference from etc
+
+
+Learn to break up huge tasks into iterative prompting: 
+What is the most stable layer or boundary I can define first?
+How can I break this task so each step gives the next one better context?
+What is the smallest version of this idea that would let me evaluate the direction quickly?
+How can I prototype in a way that keeps experiments separate from production-quality code?
+Use those questions to decide how to iterate. If the task is too broad, break it into layers or checkpoints. If the shape of the solution is still unclear, prototype the smallest useful version first. The goal is to create review points where you can steer the agent before complexity compounds.
+
+Planning vs Direct prompting:
+Before you switch into planning mode, ask yourself:
+Would getting this task wrong be expensive to unwind?
+Do I need the agent to clarify requirements before it starts implementing?
+Would a visible task list help me review or steer the work more effectively?
+If the answer to those questions is yes, plan first. A short planning pass gives you a chance to correct the direction before the agent starts building, which is usually much cheaper than correcting it after the implementation is already in flight.
+
+
+-- Context Engineering -- 
+The context window is the total amount of text a model can attend to in a single request. Your instructions, the conversation history, the files the agent has read, and any pasted documentation all compete for space inside that window.
+
+Review the token usage. For copilot, it is at the bottom right window
+
+
+Context Limit: 
+1. Token-to-word Ratio depends on the AI model used. Can refer to convertors to estimate the number of tokens used: https://platform.openai.com/tokenizer
+2. Multimodal (including text, video, audio data) models would also use tokens for other non-textual forms of data.
+3. Context limit introduces context rot. The following are reasons why context rot occurs:
+
+    Finite Attention Budget
+    Models do not allocate attention evenly across an ever-growing prompt. As the amount of context increases, earlier instructions have to compete with more tokens for the model’s attention.
+
+    Recency Dominance
+    Recent tokens also tend to exert more influence than older ones. That makes fresh instructions, fresh code, and fresh errors feel more salient than constraints that were established much earlier in the thread.
+
+    Error Accumulation
+    Small mistakes can compound over time. Once an incorrect assumption enters the conversation, later turns may build on it as though it were true.
+
+How to resolve?
+When an agent starts drifting, do not just keep arguing with the same thread. Open a new one, restate the task, and bring forward only the decisions, files, and constraints that still matter. That reset is often faster than trying to repair a long conversation that has already started to rot.
+
+
+How to remember the context?
+- Use a persistent project level guidance which is injected into every reqeust sent to the agent (e.g. AGENTS.md, CLAUDE.md file)
+- The file could be at the project level or individual nested directories where different services may need different language, framework or workflow instructions
+- Create progressive disclosure by linking to other .md files for specific info (e.g. data schema is one file, repo structure is another file, techstack is another, framework is another one...) instead of adding everything into 1 .md file.
+
+Sample instructions to put in .md file:
+- progressive disclosure document locations
+- test / code quality instructions
+- git workflow
+- staleness update instructions
+- critical guardrails
+
+How to create the AGENTS.md file?
+- Using /init command for github copilot or direct prompting to the agent.

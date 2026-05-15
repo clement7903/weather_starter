@@ -1,4 +1,12 @@
-import { CloudIcon, DropletIcon, SunIcon, ThermometerIcon, TrendIcon, WindIcon } from './icons';
+import {
+  CloudIcon,
+  DropletIcon,
+  EyeIcon,
+  SunIcon,
+  ThermometerIcon,
+  TrendIcon,
+  WindIcon,
+} from './icons';
 import type { ReactNode } from 'react';
 import type { WeatherSnapshot } from '../types';
 
@@ -72,6 +80,76 @@ function airQualityLabel(psi: number | null | undefined): string {
   if (psi <= 200) return 'Unhealthy';
   if (psi <= 300) return 'Very Unhealthy';
   return 'Hazardous';
+}
+
+function conditionVisual(condition: string | null | undefined) {
+  const value = condition?.toLowerCase() ?? '';
+
+  if (value.includes('fair') || value.includes('sun') || value.includes('bright')) {
+    return {
+      icon: <SunIcon className="h-4 w-4" />,
+      badge: 'from-amber-300/30 to-orange-400/20',
+    };
+  }
+
+  if (value.includes('rain') || value.includes('shower') || value.includes('thunder')) {
+    return {
+      icon: <CloudIcon className="h-4 w-4" />,
+      badge: 'from-sky-300/30 to-blue-500/20',
+    };
+  }
+
+  if (value.includes('haze') || value.includes('mist') || value.includes('fog')) {
+    return {
+      icon: <EyeIcon className="h-4 w-4" />,
+      badge: 'from-slate-300/30 to-slate-500/20',
+    };
+  }
+
+  if (value.includes('wind')) {
+    return {
+      icon: <WindIcon className="h-4 w-4" />,
+      badge: 'from-cyan-300/30 to-emerald-400/20',
+    };
+  }
+
+  return {
+    icon: <CloudIcon className="h-4 w-4" />,
+    badge: 'from-white/15 to-white/5',
+  };
+}
+
+export function ConditionTile({ weather }: WeatherProps) {
+  const condition = weather?.condition ?? 'Unavailable';
+  const visual = conditionVisual(condition);
+
+  return (
+    <TileShell
+      icon={visual.icon}
+      title="Condition"
+      className={`col-span-2 overflow-hidden bg-gradient-to-br lg:col-span-4 ${visual.badge}`}
+    >
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+        <div>
+          <div className="text-4xl font-light leading-none text-white/95">{condition}</div>
+          <p className="mt-2 max-w-xl text-sm leading-snug text-white/75">
+            {weather?.valid_period_text || 'Latest 2-hour forecast from data.gov.sg.'}
+          </p>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3 text-sm text-white/80">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/55">
+            Area
+          </div>
+          <div className="mt-1 text-base text-white/95">
+            {weather?.area ?? 'Nearest forecast area'}
+          </div>
+          {weather?.observed_at && (
+            <div className="mt-2 text-xs text-white/60">Updated {weather.observed_at}</div>
+          )}
+        </div>
+      </div>
+    </TileShell>
+  );
 }
 
 export function AirQualityTile({ weather }: WeatherProps) {
@@ -247,6 +325,7 @@ export function AveragesTile({ weather }: WeatherProps) {
 export function TileGrid({ weather }: WeatherProps) {
   return (
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <ConditionTile weather={weather} />
       <AirQualityTile weather={weather} />
       <WindTile weather={weather} />
       <UVTile weather={weather} />
