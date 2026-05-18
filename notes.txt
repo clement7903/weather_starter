@@ -66,3 +66,9 @@ What are some ways to resolve token limits?
     
     It includes "Skills": reusable instructions that teach the agent how to perform a specific workflow or task. In practice, they are usually written as small Markdown files with a name, a short description, and step-by-step guidance the agent can follow. They will be covered in more detail in a later module.
 
+How do the agents search for context in files?
+- Search only visible files, normally will exclude .env and node_modules files.
+- Embedding search: Code is split into smaller chunks before embedding it. 
+    - As chunks splits logical sequential code, they can hide useful context.
+    - Staleness is present in active codebases until the embedding store is rebuilt.
+    - Efficient similarity search requires a separate vector database, not something that is local/lightweight.
