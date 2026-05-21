@@ -90,3 +90,7 @@ Tools and MCP integrations usually expose their definitions up front when they a
 - The structure afterwards is flexible and should be designed around the workflow the skill is teaching. Some coding tools add their own conventions or formatting details for skills, so it is still worth checking the documentation for the specific tool you are using.
 - Skills can do much more than wrap tool calls. They are also useful for packaging repeatable workflows, guardrails, and project-specific habits so the agent can reuse them consistently.
 
+Where to find the SKILLs or MCPs?
+- Use public registries such as
+    https://registry.modelcontextprotocol.io/
+    https://www.skills.sh/
