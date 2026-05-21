@@ -83,6 +83,8 @@ MCP is most useful when you have no better option. Because MCPs usually load too
 ** Skills **
 Tools and MCP integrations usually expose their definitions up front when they are loaded. Skills are different: the agent first discovers that a skill exists, then loads the full instructions only when it decides the skill is relevant. That two-step pattern makes skills much more token efficient.
 
+Skills explain the steps / "how" to do things while MCP provides the connectivity between external systems (e.g. databases) and the agent.
+
 - Usually stored in SKILL.md file
 - The following frontmatter is required at the top of SKILL.md:
     name: A short identifier
@@ -94,3 +96,19 @@ Where to find the SKILLs or MCPs?
 - Use public registries such as
     https://registry.modelcontextprotocol.io/
     https://www.skills.sh/
+
+
+** Subagents **
+- Prevents context rot by assigning a mini agent for a specialized task.
+- Each subagent to have the following:
+    1. Model being used
+    2. Clear role
+    3. Tool permissions needed to do its task
+- Some good areas for the use of subagents include:
+    Code Review
+    Security Review
+    Front End
+    Back End
+
+
+Module 5 : Responsible AI
