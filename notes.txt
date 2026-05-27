@@ -112,3 +112,13 @@ Where to find the SKILLs or MCPs?
 
 
 Module 5 : Responsible AI
+
+Methods:
+1. Slop squatting: Slop squatting combines AI hallucinations with typo squatting. In traditional typo squatting, a hacker registers a domain like "gogle.com", hoping you mistype the URL. In slop squatting, the LLM makes the mistake for you.
+2. Prompt Injection: manipulates the input provided to the AI to make it behave in unintended ways.
+3. Confused Deputy: A confused deputy attack is when an attacker exploits a service which is otherwise authorised to perform certain activities with escalated privileges to instead perform unintended actions on behalf of the attacker.
+
+1. AI Verify Toolkit
+2. Project Moonshot: is an open-source evaluation tool designed to help developers and organizations test their Large Language Models (LLMs) and AI applications for safety, security, and performance before they are deployed to the public.
+
+Module 6: AI Minded Technology Stack
