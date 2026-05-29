@@ -27,7 +27,7 @@ const appleTheme: Theme = {
     '--bg-linear3': '#4a627c',
     '--bg-linear4': '#3c5066',
     '--text-color': '#ffffff',
-    '--card-bg': 'rgba(255,255,255,0.04)'
+    '--card-bg': 'rgba(255,255,255,0.04)',
   },
 };
 
@@ -72,7 +72,7 @@ const minimalTheme: Theme = {
     '--bg-linear3': '#f0f0f2',
     '--bg-linear4': '#e8e8ea',
     '--text-color': '#0b1220',
-    '--card-bg': 'rgba(255,255,255,0.9)'
+    '--card-bg': 'rgba(255,255,255,0.9)',
   },
 };
 
@@ -86,7 +86,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   });
 
   const themes = useMemo(
-    () => ({ apple: appleTheme, clearSky: clearSkyTheme, midnight: midnightTheme, minimal: minimalTheme }),
+    () => ({
+      apple: appleTheme,
+      clearSky: clearSkyTheme,
+      midnight: midnightTheme,
+      minimal: minimalTheme,
+    }),
     [],
   );
 

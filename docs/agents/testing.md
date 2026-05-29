@@ -7,5 +7,6 @@
   - Run a single test file: `./node_modules/.bin/vitest run backend/src/weather.test.ts --reporter=verbose`
 
 Agent guidance
+
 - When modifying backend behavior, run and update unit tests in `backend/src/`.
 - Prefer small, focused tests; use Supertest for API-level assertions.

@@ -8,4 +8,5 @@
 - Scripts & tools: `scripts/` (dev.mjs, start.mjs, doctor.mjs, reset.mjs).
 
 Files that commonly change
+
 - `backend/src/*.ts`, route handlers under `backend/src/routes/`, and component files under `frontend/src/components/`.

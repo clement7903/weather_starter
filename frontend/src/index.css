@@ -23,7 +23,13 @@ body {
   background:
     radial-gradient(120% 80% at 70% 0%, var(--bg-radial1) 0%, transparent 55%),
     radial-gradient(90% 70% at 10% 100%, var(--bg-radial2) 0%, transparent 60%),
-    linear-gradient(170deg, var(--bg-linear1) 0%, var(--bg-linear2) 35%, var(--bg-linear3) 65%, var(--bg-linear4) 100%);
+    linear-gradient(
+      170deg,
+      var(--bg-linear1) 0%,
+      var(--bg-linear2) 35%,
+      var(--bg-linear3) 65%,
+      var(--bg-linear4) 100%
+    );
   background-attachment: fixed;
   background-repeat: no-repeat;
   @apply transition;

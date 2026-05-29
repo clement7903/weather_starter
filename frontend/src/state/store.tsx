@@ -131,7 +131,7 @@ export function StoreProvider({ children }: ProviderProps) {
       if (nextIsAdding) logInteraction('location_form_opened');
     },
     create,
-      deleteLocation: deleteLocationById,
+    deleteLocation: deleteLocationById,
     refresh,
   };
 

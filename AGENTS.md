@@ -5,6 +5,7 @@ One-line description: Weather Starter — monorepo with a Vite + React frontend 
 Package manager: npm (root workspace + `frontend/` and `backend/` packages).
 
 Essentials (root-level, relevant to every task)
+
 - Core root commands: `npm run dev`, `npm run build`, `npm run start`, `npm test`.
 - Monorepo, ES modules (`type: module`), TypeScript codebase.
 - Tests live in `backend/src/**/*.test.ts` (Vitest, Node env).

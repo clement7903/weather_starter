@@ -522,14 +522,12 @@ export class SingaporeWeatherClient {
       windSpeed: { value: number | null; timestamp: string | null } | null;
       windDirection: { value: number | null; timestamp: string | null } | null;
       uvIndex: { value: number | null; timestamp: string | null } | null;
-      twentyFourHourForecast:
-        | {
-            low: number | null;
-            high: number | null;
-            periods: ForecastPeriod[];
-            timestamp: string | null;
-          }
-        | null;
+      twentyFourHourForecast: {
+        low: number | null;
+        high: number | null;
+        periods: ForecastPeriod[];
+        timestamp: string | null;
+      } | null;
       fourDayForecast: { days: DailyForecast[]; timestamp: string | null } | null;
     },
   ): WeatherSnapshot {
@@ -652,7 +650,6 @@ function valueForRegion(
   if (!values || !region) return null;
   return numberOrNull(values[region]);
 }
-
 
 function defaultRegions(): RegionMetadata[] {
   return [
