@@ -86,7 +86,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   });
 
   const themes = useMemo(
-    () => ({
+    (): Record<string, Theme> => ({
       apple: appleTheme,
       clearSky: clearSkyTheme,
       midnight: midnightTheme,
@@ -99,7 +99,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const theme = themes[themeName] ?? themes.apple;
     // apply CSS variables to :root
     const root = document.documentElement;
-    Object.entries(theme.vars).forEach(([k, v]) => root.style.setProperty(k, v));
+    Object.entries(theme.vars).forEach(([k, v]) => root.style.setProperty(k, v as string));
     try {
       localStorage.setItem(STORAGE_KEY, theme.name);
     } catch {}
