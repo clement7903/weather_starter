@@ -129,3 +129,4 @@ Module 7: AI Powered Development
 3. Execution using Git Worktrees allow you to run multiple agents in parallel in the same repository without the agents stepping over each other. This is particularly useful for experimentation workflows or when working on tasks concurrently.
 4. Execution using user interfaces such as Vercel Agent Browser / React Grab to record images or videos or specific parts of the UI for Agents to work on more accurately.
 
+Module 8: AI Enhanced Debugging & Testing
