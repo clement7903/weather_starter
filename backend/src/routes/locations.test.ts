@@ -2,7 +2,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import request from 'supertest';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import type { WeatherSnapshot } from '../weather.js';
 
 const weather: WeatherSnapshot = {
@@ -31,12 +31,15 @@ const weather: WeatherSnapshot = {
 describe('locations API', () => {
   let tempDir: string;
   let app: Awaited<ReturnType<typeof import('../server.js').createApp>>;
+  let resetStore: typeof import('../db.js').resetStore;
 
   beforeAll(async () => {
     tempDir = await mkdtemp(join(tmpdir(), 'weather-starter-test-'));
     process.env.DATABASE_PATH = join(tempDir, 'weather.db');
     process.env.LOG_LEVEL = 'silent';
 
+    const dbModule = await import('../db.js');
+    resetStore = dbModule.resetStore;
     const { createApp } = await import('../server.js');
     app = await createApp({
       serveFrontend: false,
@@ -47,6 +50,10 @@ describe('locations API', () => {
         },
       },
     });
+  });
+
+  beforeEach(async () => {
+    await resetStore();
   });
 
   afterAll(async () => {
