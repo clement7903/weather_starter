@@ -130,3 +130,11 @@ Module 7: AI Powered Development
 4. Execution using user interfaces such as Vercel Agent Browser / React Grab to record images or videos or specific parts of the UI for Agents to work on more accurately.
 
 Module 8: AI Enhanced Debugging & Testing
+Module 10: Agentic Product Development
+- Harness Engineering:
+    1. Sandboxes are isolated environments for the agents to operate in. 
+        e.g. Docker containers or cloud environments
+    2. Remote channels: Through the use of github / slack / teams to give instructions to the AI agent to make changes instead of changing the code directly. Helps to keep everyone else informed, will enable SWE / product managers to make changes on the fly through mobile applications.
+    3. Frontend: e.g. react grab and frontman allows for visual changes to be applied by selecting elements on the page.
+
+    
